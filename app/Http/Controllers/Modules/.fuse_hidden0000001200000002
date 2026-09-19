@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Controllers\Modules;
+
+use App\Http\Controllers\Controller;
+use App\Models\Categoria;
+use App\Models\Cliente;
+use App\Models\Restaurante;
+use App\Models\Mesa;
+use App\Models\Pedido;
+use App\Models\PedidoItem;
+use App\Models\Producto;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class PosController extends Controller
+{
+    public function index()
+    {
+        $categorias = Categoria::where('activo', true)->orderBy('orden')->get();
+        $productos = Producto::with('categoria')->where('disponible', true)->orderBy('nombre')->get();
+        $mesas = Mesa::orderByRaw('CAST(numero AS UNSIGNED)')->get();
+        $clientes = Cliente::orderBy('nombre')->get();
+        $config = Restaurante::actual();
+        return view('modules.pos.index', compact('categorias', 'productos', 'mesas', 'clientes', 'config'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'mesa_id' => 'nullable|exists:mesas,id',
+            'cliente_id' => 'nullable|exists:clientes,id',
+            'tipo' => 'required|in:mesa,llevar,delivery',
+            'metodo_pago' => 'nullable|in:efectivo,tarjeta,yape,plin,transferencia',
+            'pagar' => 'nullable|boolean',
+            'descuento' => 'nullable|numeric|min:0',
+            'items' => 'required|array|min:1',
+            'items.*.id' => 'required|exists:productos,id',
+            'items.*.cantidad' => 'required|integer|min:1',
+        ]);
+
+        $config = Restaurante::actual();
+
+        $pedido = DB::transaction(function () use ($data, $config, $request) {
+            $pedido = Pedido::create([
+                'codigo' => Pedido::generarCodigo(),
+                'mesa_id' => $data['tipo'] === 'mesa' ? ($data['mesa_id'] ?? null) : null,
+                'cliente_id' => $data['cliente_id'] ?? null,
+                'user_id' => $request->user()->id,
+                'tipo' => $data['tipo'],
+                'estado' => ($data['pagar'] ?? false) ? 'pagado' : 'pendiente',
+                'descuento' => $data['descuento'] ?? 0,
+                'metodo_pago' => ($data['pagar'] ?? false) ? ($data['metodo_pago'] ?? 'efectivo') : null,
+                'pagado_at' => ($data['pagar'] ?? false) ? now() : null,
+            ]);
+
+            $subtotal = 0;
+            foreach ($data['items'] as $item) {
+                $prod = Producto::find($item['id']);
+                $sub = $prod->precio * $item['cantidad'];
+                $subtotal += $sub;
+                PedidoItem::create([
+                    'pedido_id' => $pedido->id,
+                    'producto_id' => $prod->id,
+                    'nombre_producto' => $prod->nombre,
+                    'cantidad' => $item['cantidad'],
+                    'precio' => $prod->precio,
+                    'subtotal' => $sub,
+                ]);
+                $prod->increment('vendidos', $item['cantidad']);
+                if ($prod->controla_stock) {
+                    $prod->decrement('stock', $item['cantidad']);
+                }
+
+                // Inventario automático: descontar insumos según la receta del producto
+                foreach ($prod->recetas as $r) {
+                    if ($r->insumo) {
+                        $r->insumo->decrement('stock', (float) $r->cantidad * $item['cantidad']);
+                    }
+                }
+            }
+
+            $descuento = (float) ($data['descuento'] ?? 0);
+            $base = max(0, $subtotal - $descuento);
+            $impuesto = round($base * ((float) $config->igv / 100), 2);
+
+            $pedido->update([
+                'subtotal' => $subtotal,
+                'impuesto' => $impuesto,
+                'total' => $base + $impuesto,
+            ]);
+
+            if ($pedido->mesa_id && ! ($data['pagar'] ?? false)) {
+                Mesa::where('id', $pedido->mesa_id)->update(['estado' => 'ocupada']);
+            }
+
+            return $pedido;
+        });
+
+        return redirect()->route('pedidos.show', $pedido)->with('success', "Pedido {$pedido->codigo} registrado correctamente.");
+    }
+}

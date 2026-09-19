@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Mi Restaurante VIP') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="antialiased">
+    <div class="min-h-screen grid lg:grid-cols-2">
+        {{-- Panel izquierdo: marca --}}
+        <div class="relative hidden lg:flex flex-col justify-between overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-900 p-12 text-white">
+            <div class="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-white/10 blur-2xl"></div>
+            <div class="absolute -bottom-32 -left-16 h-96 w-96 rounded-full bg-accent-500/30 blur-3xl"></div>
+
+            <div class="relative flex items-center gap-3">
+                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-2xl backdrop-blur">🍽️</div>
+                <div>
+                    <p class="text-lg font-extrabold leading-tight">Mi Restaurante VIP</p>
+                    <p class="text-xs text-orange-100/70">Gestión integral de restaurantes</p>
+                </div>
+            </div>
+
+            <div class="relative space-y-6">
+                <h1 class="text-4xl font-extrabold leading-tight">Administra tu restaurante<br>desde un solo lugar.</h1>
+                <p class="max-w-md text-orange-100/80">Punto de venta, mesas, reservas, carta digital, inventario y reportes en tiempo real. Todo con un diseño pensado para tu negocio.</p>
+                <div class="flex flex-wrap gap-3 text-sm">
+                    <span class="rounded-full bg-white/10 px-4 py-1.5 backdrop-blur">⚡ POS rápido</span>
+                    <span class="rounded-full bg-white/10 px-4 py-1.5 backdrop-blur">📅 Reservas</span>
+                    <span class="rounded-full bg-white/10 px-4 py-1.5 backdrop-blur">📊 Reportes</span>
+                </div>
+            </div>
+
+            <p class="relative text-xs text-orange-100/60">© {{ date('Y') }} Mi Restaurante VIP — Todos los derechos reservados.</p>
+        </div>
+
+        {{-- Panel derecho: formulario --}}
+        <div class="flex items-center justify-center bg-slate-50 p-6 sm:p-12">
+            <div class="w-full max-w-md">
+                <div class="mb-8 flex items-center gap-3 lg:hidden">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-600 text-xl text-white">🍽️</div>
+                    <p class="text-lg font-extrabold text-slate-800">Mi Restaurante VIP</p>
+                </div>
+                {{ $slot }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+===== Ejecutando DashboardDemoSeeder ===== 
+Fecha: mar 28/07/2026  8:57:12.72 
+ 
+Usando PHP: php 
+ 
+
+   INFO  Seeding database.  
+
+Restaurante destino: Mi Restaurante VIP (id 1)
+Limpiando datos demo anteriores…
+Comprobantes demo creados: 10
+Pedidos demo creados: 56
+Ventas de HOY (pagadas): S/ 2,205.42
+✔ Datos de demostración cargados correctamente.
+ 
+===== Fin ===== 

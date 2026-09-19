@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Restaurante VIP — Software de gestión para restaurantes</title>
+    <meta name="description" content="Sistema SaaS todo en uno para restaurantes: punto de venta, mesas, reservas, carta digital, inventario y reportes en tiempo real.">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        .btn-warm { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-amber-600/30 transition hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2; }
+        .btn-warm-ghost { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-stone-700 ring-1 ring-stone-200 transition hover:bg-stone-50; }
+    </style>
+</head>
+<body class="bg-[#fdf8f2] text-stone-700" x-data="{ menu: false }">
+
+    {{-- ===== NAV ===== --}}
+    <header class="sticky top-0 z-30 border-b border-amber-100/70 bg-[#fdf8f2]/85 backdrop-blur">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <a href="#" class="flex items-center gap-2.5">
+                <span class="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-xl text-white shadow-md shadow-orange-600/30">🍽️</span>
+                <span class="text-lg font-extrabold tracking-tight text-stone-800">Mi Restaurante <span class="text-amber-600">VIP</span></span>
+            </a>
+            <div class="hidden items-center gap-8 md:flex">
+                <a href="#features" class="text-sm font-semibold text-stone-600 hover:text-amber-600">Funciones</a>
+                <a href="#ambiente" class="text-sm font-semibold text-stone-600 hover:text-amber-600">El sistema</a>
+                <a href="#precios" class="text-sm font-semibold text-stone-600 hover:text-amber-600">Precios</a>
+                <a href="{{ route('login') }}" class="text-sm font-semibold text-stone-600 hover:text-amber-600">Iniciar sesión</a>
+                <a href="{{ route('register') }}" class="btn-warm">Empezar gratis</a>
+            </div>
+            <button @click="menu=!menu" class="rounded-lg p-2 text-stone-600 md:hidden">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </nav>
+        <div x-show="menu" class="border-t border-amber-100 px-6 py-4 md:hidden" style="display:none">
+            <div class="flex flex-col gap-3">
+                <a href="#features" class="text-sm font-semibold text-stone-600">Funciones</a>
+                <a href="#ambiente" class="text-sm font-semibold text-stone-600">El sistema</a>
+                <a href="#precios" class="text-sm font-semibold text-stone-600">Precios</a>
+                <a href="{{ route('login') }}" class="text-sm font-semibold text-stone-600">Iniciar sesión</a>
+                <a href="{{ route('register') }}" class="btn-warm justify-center">Empezar gratis</a>
+            </div>
+        </div>
+    </header>
+
+    {{-- ===== HERO ===== --}}
+    <section class="relative overflow-hidden">
+        <div class="absolute -top-32 right-0 h-96 w-96 rounded-full bg-amber-200/50 blur-3xl"></div>
+        <div class="absolute top-40 -left-24 h-80 w-80 rounded-full bg-orange-200/40 blur-3xl"></div>
+        <div class="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-2 lg:py-24">
+            <div>
+                <span class="badge bg-amber-100 text-amber-800">🔥 Software 100% en la nube</span>
+                <h1 class="mt-4 text-4xl font-extrabold leading-tight text-stone-900 sm:text-5xl">
+                    Gestiona tu restaurante <span class="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">sin complicaciones</span>
+                </h1>
+                <p class="mt-5 max-w-lg text-lg text-stone-500">
+                    Punto de venta, mesas, reservas, carta digital, inventario y reportes en tiempo real. Todo lo que tu negocio necesita en una sola plataforma.
+                </p>
+                <div class="mt-8 flex flex-wrap gap-3">
+                    <a href="{{ route('register') }}" class="btn-warm px-6 py-3 text-base">Crear mi restaurante gratis</a>
+                    <a href="#precios" class="btn-warm-ghost px-6 py-3 text-base">Ver planes</a>
+                </div>
+                <p class="mt-4 text-sm text-stone-400">14 días de prueba · Sin tarjeta de crédito</p>
+
+                <div class="mt-8 flex items-center gap-5">
+                    <div class="flex -space-x-3">
+                        <img class="h-10 w-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1583394293214-28a5b42b6d1c?auto=format&fit=crop&w=80&q=80" alt="">
+                        <img class="h-10 w-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=80&q=80" alt="">
+                        <img class="h-10 w-10 rounded-full border-2 border-white object-cover" src="https://images.unsplash.com/photo-1607631568010-a87245c0daf8?auto=format&fit=crop&w=80&q=80" alt="">
+                    </div>
+                    <p class="text-sm text-stone-500"><span class="font-bold text-stone-800">+500 restaurantes</span><br>ya confían en nosotros</p>
+                </div>
+            </div>
+
+            {{-- Imagen principal de restaurante + tarjeta flotante --}}
+            <div class="relative">
+                <div class="overflow-hidden rounded-[2rem] shadow-2xl shadow-orange-900/20 ring-1 ring-black/5">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"
+                         alt="Ambiente de restaurante" class="h-[480px] w-full object-cover">
+                    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-900/40 via-transparent to-transparent"></div>
+                </div>
+
+                {{-- Tarjeta de ventas flotante --}}
+                <div class="absolute -bottom-6 -left-4 w-64 rounded-2xl border border-amber-100 bg-white/95 p-4 shadow-xl backdrop-blur sm:-left-8">
+                    <p class="text-xs font-semibold text-stone-400">Ventas del día</p>
+                    <p class="text-2xl font-extrabold text-stone-900">S/ 4,820.50</p>
+                    <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+                        <div class="rounded-lg bg-amber-50 p-2"><p class="text-base font-bold text-amber-700">128</p><p class="text-[10px] text-stone-400">Pedidos</p></div>
+                        <div class="rounded-lg bg-amber-50 p-2"><p class="text-base font-bold text-amber-700">12</p><p class="text-[10px] text-stone-400">Mesas</p></div>
+                        <div class="rounded-lg bg-amber-50 p-2"><p class="text-base font-bold text-amber-700">96%</p><p class="text-[10px] text-stone-400">Meta</p></div>
+                    </div>
+                    <div class="mt-3 flex items-end gap-1">
+                        @foreach ([16,26,20,32,24,38,28,34] as $h)
+                            <div class="flex-1 rounded-t bg-gradient-to-t from-orange-500 to-amber-400" style="height: {{ $h }}px"></div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Badge plato --}}
+                <div class="absolute -top-5 -right-3 flex items-center gap-2 rounded-2xl bg-white/95 px-4 py-2.5 shadow-xl backdrop-blur sm:-right-6">
+                    <span class="text-2xl">⭐</span>
+                    <div><p class="text-sm font-bold text-stone-800">Plato del día</p><p class="text-[11px] text-stone-400">Lomo saltado · S/ 32</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ===== FEATURES ===== --}}
+    <section id="features" class="bg-white py-20">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mx-auto max-w-2xl text-center">
+                <span class="badge bg-amber-100 text-amber-800">Funciones</span>
+                <h2 class="mt-3 text-3xl font-extrabold text-stone-900">Todo lo que necesitas para crecer</h2>
+                <p class="mt-3 text-stone-500">Una plataforma completa diseñada para la operación real de un restaurante.</p>
+            </div>
+            <div class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                @php
+                    $features = [
+                        ['🛒','Punto de Venta','Toma pedidos en segundos con cálculo automático de IGV, descuentos y múltiples medios de pago.'],
+                        ['🪑','Gestión de Mesas','Visualiza el estado de tus salones en tiempo real: libres, ocupadas, reservadas y por cobrar.'],
+                        ['📅','Reservas','Organiza las reservas de tus clientes y asigna mesas sin sobreventa.'],
+                        ['📖','Carta Digital','Administra categorías, productos, precios, costos y disponibilidad desde un solo lugar.'],
+                        ['📦','Inventario','Controla insumos y recibe alertas cuando el stock esté por agotarse.'],
+                        ['📊','Reportes','Mide ventas, ticket promedio, productos top y métodos de pago por rango de fechas.'],
+                    ];
+                @endphp
+                @foreach ($features as [$icon, $title, $desc])
+                    <div class="group rounded-2xl border border-stone-100 bg-[#fffdfb] p-5 shadow-sm transition hover:-translate-y-1 hover:border-amber-200 hover:shadow-lg">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-orange-100 text-2xl">{{ $icon }}</div>
+                        <h3 class="mt-4 text-lg font-bold text-stone-800">{{ $title }}</h3>
+                        <p class="mt-2 text-sm text-stone-500">{{ $desc }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ===== AMBIENTE / SHOWCASE ===== --}}
+    <section id="ambiente" class="py-20">
+        <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2">
+            <div class="grid grid-cols-2 gap-4">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80" alt="Plato gourmet" class="h-56 w-full rounded-2xl object-cover shadow-lg">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80" alt="Salón de restaurante" class="mt-8 h-56 w-full rounded-2xl object-cover shadow-lg">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80" alt="Atención al cliente" class="h-56 w-full rounded-2xl object-cover shadow-lg">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Cocina del restaurante" class="mt-8 h-56 w-full rounded-2xl object-cover shadow-lg">
+            </div>
+            <div>
+                <span class="badge bg-amber-100 text-amber-800">Diseñado para tu cocina</span>
+                <h2 class="mt-3 text-3xl font-extrabold text-stone-900">Del salón a la caja, todo en orden</h2>
+                <p class="mt-4 text-stone-500">Tu equipo trabaja más rápido y con menos errores. Los mozos toman pedidos desde el celular, la cocina los recibe al instante y tú ves cada número de tu negocio en tiempo real.</p>
+                <ul class="mt-6 space-y-3 text-sm">
+                    @foreach (['Comandas a cocina en tiempo real','Control de mermas y costos por plato','Cierre de caja y arqueo diario','Reportes listos para tu contador'] as $item)
+                        <li class="flex items-center gap-3"><span class="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 text-amber-700">✓</span><span class="text-stone-600">{{ $item }}</span></li>
+                    @endforeach
+                </ul>
+                <a href="{{ route('register') }}" class="btn-warm mt-8 px-6 py-3 text-base">Probar gratis 14 días</a>
+            </div>
+        </div>
+    </section>
+
+    {{-- ===== PRECIOS ===== --}}
+    <section id="precios" class="bg-white py-20">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mx-auto max-w-2xl text-center">
+                <span class="badge bg-amber-100 text-amber-800">Precios</span>
+                <h2 class="mt-3 text-3xl font-extrabold text-stone-900">Planes para cada etapa de tu negocio</h2>
+                <p class="mt-3 text-stone-500">Empieza gratis y escala cuando lo necesites. Sin permanencia.</p>
+            </div>
+
+            <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+                @forelse ($planes as $plan)
+                    <div class="relative flex flex-col rounded-2xl border bg-[#fffdfb] p-6 shadow-sm {{ $plan->destacado ? 'border-amber-300 ring-2 ring-amber-400 shadow-xl' : 'border-stone-100' }}">
+                        @if ($plan->destacado)
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-500 to-orange-600 px-3 py-1 text-xs font-bold text-white shadow">Más popular</span>
+                        @endif
+                        <h3 class="text-lg font-extrabold text-stone-800">{{ $plan->nombre }}</h3>
+                        <p class="mt-1 text-sm text-stone-500">{{ $plan->descripcion }}</p>
+                        <div class="mt-4 flex items-end gap-1">
+                            <span class="text-4xl font-extrabold text-stone-900">S/ {{ number_format($plan->precio, 0) }}</span>
+                            <span class="mb-1 text-sm text-stone-400">/{{ $plan->intervalo === 'anual' ? 'año' : 'mes' }}</span>
+                        </div>
+                        <ul class="mt-6 space-y-3 text-sm">
+                            <li class="flex items-center gap-2"><span class="text-amber-600">✓</span> {{ $plan->limiteTexto('mesas') }} mesas</li>
+                            <li class="flex items-center gap-2"><span class="text-amber-600">✓</span> {{ $plan->limiteTexto('productos') }} productos</li>
+                            <li class="flex items-center gap-2"><span class="text-amber-600">✓</span> {{ $plan->limiteTexto('usuarios') }} usuarios</li>
+                            @foreach (($plan->features ?? []) as $feat)
+                                <li class="flex items-center gap-2"><span class="text-amber-600">✓</span> {{ $feat }}</li>
+                            @endforeach
+                        </ul>
+                        <a href="{{ route('register', ['plan' => $plan->slug]) }}"
+                           class="{{ $plan->destacado ? 'btn-warm' : 'btn-warm-ghost' }} mt-8 w-full justify-center py-3">
+                            Empezar con {{ $plan->nombre }}
+                        </a>
+                    </div>
+                @empty
+                    <p class="col-span-full text-center text-stone-400">Pronto publicaremos nuestros planes.</p>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    {{-- ===== CTA ===== --}}
+    <section class="px-6 pb-20 pt-4">
+        <div class="relative mx-auto max-w-5xl overflow-hidden rounded-3xl px-8 py-16 text-center text-white">
+            <img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=1400&q=80" alt="" class="absolute inset-0 h-full w-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-br from-stone-900/85 to-orange-900/80"></div>
+            <div class="relative">
+                <h2 class="text-3xl font-extrabold">¿Listo para digitalizar tu restaurante?</h2>
+                <p class="mx-auto mt-3 max-w-xl text-amber-100/90">Únete a los restaurantes que ya gestionan su negocio de forma inteligente. Empieza hoy, es gratis.</p>
+                <a href="{{ route('register') }}" class="mt-8 inline-flex rounded-xl bg-amber-500 px-8 py-3 text-base font-bold text-white shadow-lg shadow-black/20 transition hover:bg-amber-400">Crear mi cuenta gratis</a>
+            </div>
+        </div>
+    </section>
+
+    {{-- ===== FOOTER ===== --}}
+    <footer class="border-t border-amber-100 bg-[#fffdfb] py-8">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 sm:flex-row">
+            <div class="flex items-center gap-2">
+                <span class="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white">🍽️</span>
+                <span class="font-bold text-stone-700">Mi Restaurante VIP</span>
+            </div>
+            <p class="text-sm text-stone-400">© {{ date('Y') }} Mi Restaurante VIP. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>
